@@ -66,10 +66,11 @@
 	if ([[iq type] isEqualToString:@"result"]) {
 		
 		NSXMLElement *finElement = [iq elementForName:@"fin" xmlns:XMLNS_XMPP_MAM];
+        BOOL complete = [finElement attributeBoolValueForName:@"complete" withDefaultValue:NO];
 		NSXMLElement *setElement = [finElement elementForName:@"set" xmlns:@"http://jabber.org/protocol/rsm"];
 		
 		XMPPResultSet *resultSet = [XMPPResultSet resultSetFromElement:setElement];
-		[multicastDelegate xmppMessageArchiveManagement:self didFinishReceivingMessagesWithSet:resultSet];
+        [multicastDelegate xmppMessageArchiveManagement:self didFinishReceivingMessagesWithSet:resultSet complete:complete];
 	} else {
 		[multicastDelegate xmppMessageArchiveManagement:self didFailToReceiveMessages:iq];
 	}
