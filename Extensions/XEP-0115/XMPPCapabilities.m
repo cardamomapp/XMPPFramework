@@ -1548,12 +1548,15 @@ static NSInteger sortFieldValues(NSXMLElement *value1, NSXMLElement *value2, voi
 	{
 		return NO;
 	}
+    NSString *node = [query attributeStringValueForName:@"node"];
+    if ([node isEqualToString:@"http://jabber.org/protocol/offline"]) {
+        // we shouldn't process XEP-0013
+        return NO;
+    }
 	
 	NSString *type = [[iq attributeStringValueForName:@"type"] lowercaseString];
 	if ([type isEqualToString:@"get"])
 	{
-		NSString *node = [query attributeStringValueForName:@"node"];
-		
 		if (node == nil || [node hasPrefix:myCapabilitiesNode])
 		{
 			[self handleDiscoRequest:iq];
